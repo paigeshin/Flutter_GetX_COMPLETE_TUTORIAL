@@ -1,4 +1,6 @@
-22/57
+# Reference
+
+[https://www.youtube.com/watch?v=wtHBsvj2QKA&list=PLCaS22Sjc8YR32XmudgmVqs49t-eKKr9t&index=1](https://www.youtube.com/watch?v=wtHBsvj2QKA&list=PLCaS22Sjc8YR32XmudgmVqs49t-eKKr9t&index=1)
 
 ```yaml
 dependencies: get:^3.13.2
@@ -66,4 +68,46 @@ dependencies: get:^3.13.2
 
 [GetView & GetWidget](https://www.notion.so/GetView-GetWidget-8bbe40c9c09a4ff192b65a819f876b03)
 
+---
+
 # CLI
+
+[getX CLI](https://www.notion.so/getX-CLI-15ba35f9910246f2b83e5aaa1e11e761)
+
+# Project Structure
+
+[Typical getX Structure Example](https://www.notion.so/Typical-getX-Structure-Example-e0e3216de9bf4c6796ae17dde6c3c7a5)
+
+[Flutter Project Structure, clean architecture ](https://www.notion.so/Flutter-Project-Structure-clean-architecture-2bb69d7b56d64b159008c199282c1a2f)
+
+[StateMinxin with getConnect](https://www.notion.so/StateMinxin-with-getConnect-4115db50598347aaa2e44541568c51ad)
+
+# Features - Other Subjects to look for.. this series is amazing
+
+[Network Connectivity ](https://www.notion.so/Network-Connectivity-762d8f17efce47048a0743410ace57f4)
+
+[Image Picker](https://www.notion.so/Image-Picker-7b1b345e7a1040cf93408459b5f656c5)
+
+[Finger Print, Face Id, Local Authentication](https://www.notion.so/Finger-Print-Face-Id-Local-Authentication-93a32db365234fb1a7055f5a816f25c1)
+
+- TextExtractor
+- Barcode detector
+- Image label
+- Scrol Controller
+- Carousel Slider
+- **Play Video**
+- Draggable Scrollable Sheet
+- Auto form validation
+- Draggable & Drag Target
+- STT
+- Persistent Animated Dynamic Theme
+- **Responsive UI**
+- ReorderableListView
+- Animated Bottom Navigation Bar
+- Signature Widget
+- Google Signin
+- **GetXMiddleware**
+- **Call Android JAVA coDE FROM fLUTTER**
+- Call Custom Javascript Code from Flutter Web
+- **Dismiss Keyboard on tap**
+- QRCode Generator
