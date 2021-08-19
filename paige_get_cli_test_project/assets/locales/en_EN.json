@@ -1,0 +1,7 @@
+{
+    "buttons": {
+        "login": "login",
+        "sign_in": "register",
+        "logout": "logout"
+    }
+}

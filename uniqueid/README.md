@@ -1,16 +1,44 @@
-# uniqueid
+```dart
+import 'package:get/get.dart';
 
-A new Flutter project.
+class MyController extends GetxController {
+  var count = 0;
+  void increment() {
+    count++;
+    update(['txtCount']);
+  }
+}
+```
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      GetBuilder<MyController>( // only this build will be excuted
+        id: 'txtCount',
+        builder: (controller) {
+          return Text(
+            'The value is ${controller.count}',
+            style: TextStyle(fontSize: 25),
+          );
+        },
+      ),
+      SizedBox(
+        height: 16,
+      ),
+      GetBuilder<MyController>(
+        builder: (controller) {
+          return Text(
+            'The value is ${controller.count}',
+            style: TextStyle(fontSize: 25),
+          );
+        },
+      ),
+      MaterialButton(
+        child: Text("Increment"),
+        onPressed: () => Get.find<MyController>().increment(),
+      ),
+    ],
+  ),
+```

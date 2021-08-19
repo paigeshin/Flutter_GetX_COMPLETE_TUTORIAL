@@ -1,16 +1,36 @@
-# storage
+```dart
+void main() async {
+  await GetStorage.init();
+  runApp(MyApp());
+}
 
-A new Flutter project.
+var storage = GetStorage();
 
-## Getting Started
+await storage.write('email', emailEditingController.text);
 
-This project is a starting point for a Flutter application.
+print("The email is ${storage.read('email')}");
+```
 
-A few resources to get you started if this is your first Flutter project:
+```dart
+// Listen to changes
+var listen = storage.listen(
+  () {
+    print('Email changed');
+  },
+);
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+// listen key
+var listenKey = storage.listenKey('email', (value) {
+  print('new key is $value');
+});
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+// remove key
+storage.remove('email');
+
+// erade the container
+storage.erase();
+
+// Create a new container
+GetStorage newStorage = GetStorage('MyStorage');
+await GetStorage.init('MyStroage'); // initialize
+```

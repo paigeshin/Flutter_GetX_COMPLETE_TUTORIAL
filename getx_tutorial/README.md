@@ -1,16 +1,124 @@
-# getx_tutorial
+```dart
+void main() {
+  runApp(StudentApp());
+}
 
-A new Flutter project.
+// Entire class becomes observable
+class Student {
+  var name;
+  var age;
+  Student({this.name, this.age});
+}
 
-## Getting Started
+class StudentApp extends StatelessWidget {
+  final student = Student(name: "tom", age: 25).obs;
 
-This project is a starting point for a Flutter application.
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("State Management"),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Obx(
+                () => Text(
+                  'Student Name: ${student.value.name}',
+                  style: TextStyle(
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              MaterialButton(
+                onPressed: () {
+                  student.update((student) {
+                    student?.name = student.name.toString().toUpperCase();
+                  });
+                },
+                color: Colors.black,
+                textColor: Colors.white,
+                child: Text("Make student name uppercase"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
 
-A few resources to get you started if this is your first Flutter project:
+```dart
+  final student = Student(name: "tom", age: 25).obs;
+  student.update((student) {
+    student?.name = student.name.toString().toUpperCase();
+  });
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+```dart
+var count = 0.obs;
+increment() => count++;
+Obx(
+  () => Text(
+    'Count valie is $count',
+    style: TextStyle(
+      fontSize: 25,
+    ),
+  ),
+),
+```
+
+```dart
+class App extends StatelessWidget {
+  var count = 0.obs;
+  increment() => count++;
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("State Management"),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Count"),
+              Obx(
+                () => Text(
+                  'Count valie is $count',
+                  style: TextStyle(
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              MaterialButton(
+                onPressed: increment,
+                color: Colors.black,
+                textColor: Colors.white,
+                child: Text("Count"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```

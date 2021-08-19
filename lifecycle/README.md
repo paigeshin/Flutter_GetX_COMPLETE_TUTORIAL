@@ -1,16 +1,102 @@
-# lifecycle
+```dart
+import 'package:get/get.dart';
 
-A new Flutter project.
+class MyController extends GetxController {
+  var count = 0;
 
-## Getting Started
+  @override
+  void onInit() {
+    super.onInit();
+    increment();
+  }
 
-This project is a starting point for a Flutter application.
+  void increment() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      count++;
+      print('count $count');
+      update();
+    });
+  }
 
-A few resources to get you started if this is your first Flutter project:
+  void decrement() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      count--;
+      print('count $count');
+      update();
+    });
+  }
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+  void cleanUpTask() {
+    print('Clean up task');
+  }
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  @override
+  void onClose() {
+    super.onClose();
+  }
+}
+```
+
+⇒ onInit 
+
+⇒ onClose
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'MyController.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  MyController myController = Get.put(MyController());
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("StateManagement"),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GetBuilder<MyController>(
+                // initState: , // => bad practice
+                // dispose: , //=> bad practice
+                // init: MyController(), //=> We declared MyController() instance globally
+                builder: (controller) {
+                  return Text(
+                    'The value is ${controller.count}',
+                    style: TextStyle(fontSize: 25),
+                  );
+                },
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              MaterialButton(
+                child: Text("Increment"),
+                onPressed: () => Get.find<MyController>().increment(),
+              ),
+              MaterialButton(
+                child: Text("Decrement"),
+                onPressed: () => Get.find<MyController>().decrement(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```

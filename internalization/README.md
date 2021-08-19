@@ -1,16 +1,107 @@
-# internalization
+- Messages
 
-A new Flutter project.
+```dart
+import 'package:get/get.dart';
 
-## Getting Started
+class Messages extends Translations {
+  Map<String, Map<String, String>> get keys => {
+        'en_US': {
+          'Hello': 'hello',
+        },
+        'ko_KR': {
+          'Hello': '안녕하세요',
+        },
+        'fr_FR': {
+          'Hello': 'Bonjour',
+        }
+      };
+}
+```
 
-This project is a starting point for a Flutter application.
+- MyController
 
-A few resources to get you started if this is your first Flutter project:
+```dart
+import 'dart:ui';
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+import 'package:get/get.dart';
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+class MyController extends GetxController {
+  void changeLanguage(var param1, var param2) {
+    var locale = Locale(param1, param2);
+    Get.updateLocale(locale);
+  }
+}
+```
+
+- Internalization
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:internalization/MyController.dart';
+
+import 'Messages.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  MyController myController = Get.put(MyController());
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      translations: Messages(),
+      locale: Locale('en', 'US'),
+      fallbackLocale: Locale('en', 'US'),
+      title: 'Internalization',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Internalization'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Hello".tr,
+                style: TextStyle(
+                  fontSize: 36,
+                ),
+              ),
+              MaterialButton(
+                child: Text('한국어'),
+                color: Colors.black,
+                textColor: Colors.white,
+                onPressed: () {
+                  myController.changeLanguage('ko', 'KR');
+                },
+              ),
+              MaterialButton(
+                child: Text('English'),
+                color: Colors.black,
+                textColor: Colors.white,
+                onPressed: () {
+                  myController.changeLanguage('en', 'US');
+                },
+              ),
+              MaterialButton(
+                child: Text('Français'),
+                color: Colors.black,
+                textColor: Colors.white,
+                onPressed: () {
+                  myController.changeLanguage('fr', 'FR');
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```

@@ -1,16 +1,126 @@
-# getview_getwidget
+# GetView
 
-A new Flutter project.
+- If we have single controller as a dependency then we can use GetView instead of Statelesswidget and avoid writing `Get.find`
 
-## Getting Started
+# GetWidget
 
-This project is a starting point for a Flutter application.
+- It is similar to GetView with one difference . It gives the same instance of Get.find everytime. It becomes very useful when used in combination with `Get.create`
 
-A few resources to get you started if this is your first Flutter project:
+# GetView
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- For one dependency
+- extends `GetView<T:Controller>`
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+⇒ use `Get.put(CountController());`
+
+```dart
+class GetViewApp extends GetView<CountController> {
+  @override
+  Widget build(BuildContext context) {
+    Get.put(CountController());
+    // Get.create(() =>
+    // CountController()); // => Create Different Instance, it won't update widget
+    return GetMaterialApp(
+      title: 'Get Widget',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('GetView & Get Title'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(
+                () => Text(
+                  'The value is ${controller.count}',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              MaterialButton(
+                child: Text('increment'),
+                textColor: Colors.white,
+                color: Colors.black,
+                onPressed: () {
+                  print(controller.hashCode);
+                  controller.increment();
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+# GetWidget
+
+- For more than one dependencies
+- extends `GetWidget<T:Controller>`
+
+⇒ use  `Get.create(() => CountController()); // => Doesn't create different instance.`
+
+```dart
+void main() {
+  Get.put(CountController());
+  runApp(GetWidgetApp());
+}
+```
+
+⇒ Someone needs to initialize this
+
+```dart
+class GetWidgetApp extends GetWidget<CountController> {
+  @override
+  Widget build(BuildContext context) {
+    // Get.put(CountController());
+    Get.create(
+        () => CountController()); // => Doesn't create different instance.
+    return GetMaterialApp(
+      title: 'Get View',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('GetView & Get Title'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(
+                () => Text(
+                  'The value is ${controller.count}',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              MaterialButton(
+                child: Text('increment'),
+                textColor: Colors.white,
+                color: Colors.black,
+                onPressed: () {
+                  print(controller.hashCode);
+                  controller.increment();
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```

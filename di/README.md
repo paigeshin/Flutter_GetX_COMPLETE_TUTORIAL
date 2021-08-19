@@ -1,16 +1,100 @@
-# di
+- Controllers with tag & permanent
 
-A new Flutter project.
+```dart
+MyController myController = Get.put(
+    MyController(),
+    tag: 'instance1',
+    permanent: false,
+  );
+```
 
-## Getting Started
+- Lazy Put
 
-This project is a starting point for a Flutter application.
+```dart
+Get.lazyPut<MyController>(() => MyController());
 
-A few resources to get you started if this is your first Flutter project:
+Get.lazyPut<MyController>(
+  () => MyController(),
+  tag: 'instance1',
+);
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Get.lazyPut<MyController>(
+  () => MyController(),
+  tag: 'instance2',
+  fenix: true,
+); //fenix equals permenant here
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- felix ⇒ Normally, Get.lazyPut loads dependencies only one time, which means that if the route gets removed, and created again, Get.lazyPut will not load them again. This default behavior might be preferable in some cases while for others, we have the fenix property.
+
+- Put Async
+
+```dart
+Get.putAsync<MyController>(() async => await MyController());
+```
+
+### Entire Code
+
+```dart
+import 'package:di/MyController.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  /** Controller with tag & permanent **/
+  // MyController myController = Get.put(
+  //   MyController(),
+  //   tag: 'instance1',
+  //   permanent: false,
+  // );
+
+  @override
+  Widget build(BuildContext context) {
+    /** Lazy Put **/
+    // Get.lazyPut<MyController>(() => MyController());
+    // Get.lazyPut<MyController>(
+    //   () => MyController(),
+    //   tag: 'instance1',
+    // );
+    // Get.lazyPut<MyController>(
+    //   () => MyController(),
+    //   tag: 'instance2',
+    //   fenix: true,
+    // ); //fenix equals permenant here
+    // =>
+    /*
+    Normally, Get.lazyPut loads dependencies only one time, which means that if the route gets removed, and created again, Get.lazyPut will not load them again. This default behavior might be preferable in some cases while for others, we have the fenix property.
+     */
+
+    Get.putAsync<MyController>(() async => await MyController());
+
+    return GetMaterialApp(
+      title: 'Dependency Injection',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Dependency Injection'),
+        ),
+        body: Center(
+          child: MaterialButton(
+            child: Text('Click Me'),
+            textColor: Colors.white,
+            color: Colors.black,
+            onPressed: () {
+              // Get.find<MyController>(tag: 'instance1'),
+              Get.find<MyController>();
+              Get.find<MyController>().incrementCounter();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+```

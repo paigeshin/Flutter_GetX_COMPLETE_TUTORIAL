@@ -1,16 +1,88 @@
-# getx_state_management
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-A new Flutter project.
+void main() {
+  runApp(StudentApp());
+}
 
-## Getting Started
+class Student {
+  var name;
+  var age;
+  Student({this.name, this.age});
+}
 
-This project is a starting point for a Flutter application.
+class MyController extends GetxController {
+ 
+  var student = Student(name: 'Tom', age: 25).obs;
 
-A few resources to get you started if this is your first Flutter project:
+  void convertUPdateToUppercase() {
+    student.update((student) {
+      student?.name = student.name.toString().toUpperCase();
+    });
+  }
+}
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+class StudentApp extends StatelessWidget {
+  // Create the instance of Controller
+  MyController myController = Get.put(MyController());
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("State Management"),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Obx(
+                () => Text(
+                  'Name is ${myController.student.value.name}',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              MaterialButton(
+                onPressed: myController.convertUPdateToUppercase,
+                color: Colors.black,
+                textColor: Colors.white,
+                child: Text("Make student name uppercase"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+```dart
+class Student {
+  var name;
+  var age;
+  Student({this.name, this.age});
+}
+
+class MyController extends GetxController {
+ 
+  var student = Student(name: 'Tom', age: 25).obs;
+
+  void convertUPdateToUppercase() {
+    student.update((student) {
+      student?.name = student.name.toString().toUpperCase();
+    });
+  }
+}
+
+myController.convertUPdateToUppercase();
+```

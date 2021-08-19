@@ -1,16 +1,69 @@
-# service
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-A new Flutter project.
+Future<void> main() async {
+  await initServices();
+  runApp(MyApp());
+}
 
-## Getting Started
+Future<void> initServices() async {
+  print('starting services...');
+  await Get.putAsync<Service>(() async => await Service());
+  print('All services started...');
+}
 
-This project is a starting point for a Flutter application.
+// This class is like a GetxController
+// It shares the same lifecycle ( onInit(), onReady(), onClose() ).
+// It just notifies GetX Dependency Injection system,
+// that this subclass can not be removed from memory.
+class Service extends GetxService {
+  Future<void> incrementCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int counter = (prefs.getInt('counter') ?? 0) + 1;
+    print('Pressed $counter items.');
+    await prefs.setInt('counter', counter);
+  }
+}
 
-A few resources to get you started if this is your first Flutter project:
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Service',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Service'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MaterialButton(
+                  child: Text('Increment'),
+                  onPressed: () {
+                    Get.find<Service>().incrementCounter();
+                  })
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- This class is like a GetxController
+- It shares the same lifecycle ( onInit(), onReady(), onClose() ).
+- It just notifies GetX Dependency Injection system that this subclass can not be removed from memory.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### service vs binding
+
+- service, provide one controller  ⇒ You can create multiple services though
+- binding, provide multiple controller
+- Service never disappears
